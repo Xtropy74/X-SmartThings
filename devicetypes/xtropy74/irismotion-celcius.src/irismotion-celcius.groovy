@@ -264,8 +264,8 @@ private Map getBatteryResult(rawValue) {
 private Map getTemperatureResult(value) {
 	log.debug 'TEMP'
 	if (tempOffset) {
-		def offset = tempOffset as BigDecimal // **************** as int ***************
-		def v = value as BigDecimal // **************** as int ***************
+		def offset = tempOffset //as BigDecimal // **************** as int ***************
+		def v = value //as BigDecimal // **************** as int ***************
 		value = v + offset
 	}
     def descriptionText
