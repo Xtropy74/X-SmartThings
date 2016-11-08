@@ -196,10 +196,17 @@ private Map parseReportAttributeMessage(String description) {
 private Map parseCustomMessage(String description) {
 	Map resultMap = [:]
 	if (description?.startsWith('temperature: ')) {
-		def value = Double.parseDouble(description.split(": ")[1])
-		resultMap = makeTemperatureResult(convertTemperature(value))
+		def value = (description - "temperature: ").trim()
+        if (value.isNumber()) {
+        	if (getTemperatureScale() == "F") {
+            	value = celsiusToFahrenheit(value.toFloat()) as Float
+			}
+			resultMap = getTemperatureResult(value)
+            return resultMap
+        } else {
+        	log.error "invalid temperature: ${temp}"
+        }
 	}
-	return resultMap
 }
 
 // -MY CODE- //
