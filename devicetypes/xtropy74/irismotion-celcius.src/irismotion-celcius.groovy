@@ -1,4 +1,4 @@
-// definition (name: "Iris-Celcius", namespace: "xtropy", author: "Xtropy") {
+// Some code from https://github.com/SANdood/SmartThings-Fixed (Using SmartSense Open-Closed Sensor Custom)
 /*
  *  Copyright 2016 SmartThings
  *
