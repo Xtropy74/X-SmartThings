@@ -18,7 +18,7 @@ import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 
 
 metadata {
-	definition (name: "Iris-Celcius", namespace: "Xtropy74", author: "Xtropy") {
+	definition (name: "Iris-Celcius", namespace: "Xtropy74", author: "Xtropy74") {
 		capability "Motion Sensor"
 		capability "Configuration"
 		capability "Battery"
