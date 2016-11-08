@@ -287,7 +287,7 @@ private Map getTemperatureResult(value) {
 		name: 'temperature',
 		value: value,
 		descriptionText: descriptionText,
-        	translatable: true,
+		translatable: true,
 		unit: temperatureScale
 	]
 }
