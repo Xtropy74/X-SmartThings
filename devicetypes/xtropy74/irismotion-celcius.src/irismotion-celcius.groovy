@@ -191,19 +191,36 @@ private Map parseReportAttributeMessage(String description) {
 	return resultMap
 }
 
+///private Map parseCustomMessage(String description) {
+///	Map resultMap = [:]
+///	log.debug "Refreshing shitter $value"
+///    if (description?.startsWith('temperature: ')) {
+/// //		def value = description, "temperature: ", getTemperatureScale()
+/// //		def value = (description - "temperature: ", getTemperatureScale())
+///		def value = zigbee.parseHATemperatureValue(description, "temperature: ", getTemperatureScale())
+/// //       resultMap = getTemperatureResult(Integer.parseInt(value, 16).shortValue() / 100)
+/// // ORG		resultMap = getTemperatureResult(value)
+///		resultMap = getTemperatureResult(Integer.parseInt(value) / 100)
+///	}
+///	log.debug "Refreshing shit $value and $resultmap"
+///    return resultMap
+///}
+
 private Map parseCustomMessage(String description) {
 	Map resultMap = [:]
-	log.debug "Refreshing shitter $value"
-    if (description?.startsWith('temperature: ')) {
-//		def value = description, "temperature: ", getTemperatureScale()
-//		def value = (description - "temperature: ", getTemperatureScale())
-		def value = zigbee.parseHATemperatureValue(description, "temperature: ", getTemperatureScale())
-//       resultMap = getTemperatureResult(Integer.parseInt(value, 16).shortValue() / 100)
-// ORG		resultMap = getTemperatureResult(value)
-		resultMap = getTemperatureResult(value)/100
+	if (description?.startsWith('temperature: ')) {
+//		Float value = zigbee.parseHATemperatureValue(description, "temperature: ", getTemperatureScale()).toFloat()
+		def value = (description - "temperature: ").trim()
+        if (value.isNumber()) {
+        	if (getTemperatureScale() == "F") {
+            	value = celsiusToFahrenheit(value.toFloat()) as Float
+			}
+			resultMap = getTemperatureResult(value)
+            return resultMap
+        } else {
+        	log.error "invalid temperature: ${temp}"
+        }
 	}
-	log.debug "Refreshing shit $value and $resultmap"
-    return resultMap
 }
 
 private Map parseIasMessage(String description) {
@@ -261,24 +278,55 @@ private Map getBatteryResult(rawValue) {
 	return result
 }
 
-private Map getTemperatureResult(value) {
-	log.debug 'TEMP'
-	if (tempOffset) {
-		def offset = tempOffset //as BigDecimal // **************** as int ***************
-		def v = value //as BigDecimal // **************** as int ***************
-		value = v + offset
-	}
-    def descriptionText
-    if ( temperatureScale == 'C' )
-    	descriptionText = '{{ device.displayName }} was {{ value }}°C'
-    else
-    	descriptionText = '{{ device.displayName }} was {{ value }}°F'
+/// Original CODE ///
+//private Map getTemperatureResult(value) {
+//	log.debug 'TEMP'
+//	if (tempOffset) {
+/////
+///// TESTED NEXT LINE
+/////		def offset = tempOffset //as BigDecimal // **************** as int ***************
+///// TESTING DONE
+/////
+//		def offset = tempOffset as int
+/////
+///// TESTED NEXT LINE
+/////		def v = value //as BigDecimal // **************** as int ***************
+///// TESTING DONE
+/////
+//		def v = value as int
+//		value = v + offset
+//	}
+//    def descriptionText
+//    if ( temperatureScale == 'C' )
+//    	descriptionText = '{{ device.displayName }} was {{ value }}°C'
+//    else
+//    	descriptionText = '{{ device.displayName }} was {{ value }}°F'
+//
+//	return [
+//		name: 'temperature',
+//		value: value,
+//		descriptionText: descriptionText,
+//		translatable: true,
+//		unit: temperatureScale
+//	]
+//}
 
+private Map getTemperatureResult(value) {
+	log.debug "TEMP $value"
+	def linkText = getLinkText(device)
+	if (tempOffset) {
+		def offset = tempOffset as int
+		Float v = value as Float
+		value = (v + offset) as Float
+	}
+    Float nv = Math.round( (value as Float) * 10.0 ) / 10	// Need at least one decimal point
+    value = nv as Float
+	def descriptionText = "${linkText} was ${value}°${temperatureScale}"
 	return [
 		name: 'temperature',
 		value: value,
 		descriptionText: descriptionText,
-		translatable: true,
+        translatable: true,
 		unit: temperatureScale
 	]
 }
