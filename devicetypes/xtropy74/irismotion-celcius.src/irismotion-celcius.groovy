@@ -191,25 +191,11 @@ private Map parseReportAttributeMessage(String description) {
 	return resultMap
 }
 
-///private Map parseCustomMessage(String description) {
-///	Map resultMap = [:]
-///	log.debug "Refreshing shitter $value"
-///    if (description?.startsWith('temperature: ')) {
-/// //		def value = description, "temperature: ", getTemperatureScale()
-/// //		def value = (description - "temperature: ", getTemperatureScale())
-///		def value = zigbee.parseHATemperatureValue(description, "temperature: ", getTemperatureScale())
-/// //       resultMap = getTemperatureResult(Integer.parseInt(value, 16).shortValue() / 100)
-/// // ORG		resultMap = getTemperatureResult(value)
-///		resultMap = getTemperatureResult(Integer.parseInt(value) / 100)
-///	}
-///	log.debug "Refreshing shit $value and $resultmap"
-///    return resultMap
-///}
+// +MY CODE+ //
 
 private Map parseCustomMessage(String description) {
 	Map resultMap = [:]
 	if (description?.startsWith('temperature: ')) {
-//		Float value = zigbee.parseHATemperatureValue(description, "temperature: ", getTemperatureScale()).toFloat()
 		def value = (description - "temperature: ").trim()
         if (value.isNumber()) {
         	if (getTemperatureScale() == "F") {
@@ -223,12 +209,16 @@ private Map parseCustomMessage(String description) {
 	}
 }
 
+// -MY CODE- //
+
 private Map parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
 
 	// Some sensor models that use this DTH use alarm1 and some use alarm2 to signify motion
 	return (zs.isAlarm1Set() || zs.isAlarm2Set()) ? getMotionResult('active') : getMotionResult('inactive')
 }
+
+// +MY CODE+ //
 
 def getTemperature(value) {
 	def celsius = Integer.parseInt(value, 16).shortValue() / 100
@@ -238,6 +228,8 @@ def getTemperature(value) {
 		return celsiusToFahrenheit(celsius) as Integer
 	}
 }
+
+// -MY CODE- //
 
 private Map getBatteryResult(rawValue) {
 	log.debug "Battery rawValue = ${rawValue}"
@@ -278,38 +270,7 @@ private Map getBatteryResult(rawValue) {
 	return result
 }
 
-/// Original CODE ///
-//private Map getTemperatureResult(value) {
-//	log.debug 'TEMP'
-//	if (tempOffset) {
-/////
-///// TESTED NEXT LINE
-/////		def offset = tempOffset //as BigDecimal // **************** as int ***************
-///// TESTING DONE
-/////
-//		def offset = tempOffset as int
-/////
-///// TESTED NEXT LINE
-/////		def v = value //as BigDecimal // **************** as int ***************
-///// TESTING DONE
-/////
-//		def v = value as int
-//		value = v + offset
-//	}
-//    def descriptionText
-//    if ( temperatureScale == 'C' )
-//    	descriptionText = '{{ device.displayName }} was {{ value }}°C'
-//    else
-//    	descriptionText = '{{ device.displayName }} was {{ value }}°F'
-//
-//	return [
-//		name: 'temperature',
-//		value: value,
-//		descriptionText: descriptionText,
-//		translatable: true,
-//		unit: temperatureScale
-//	]
-//}
+// +MY CODE+ //
 
 private Map getTemperatureResult(value) {
 	log.debug "TEMP $value"
@@ -326,10 +287,12 @@ private Map getTemperatureResult(value) {
 		name: 'temperature',
 		value: value,
 		descriptionText: descriptionText,
-        translatable: true,
+        	translatable: true,
 		unit: temperatureScale
 	]
 }
+
+// -MY CODE- //
 
 private Map getMotionResult(value) {
 	log.debug 'motion'
