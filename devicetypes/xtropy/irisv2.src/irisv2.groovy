@@ -265,30 +265,23 @@ private Map getBatteryResult(rawValue) {
 	return result
 }
 
-// +MY CODE+ //
-
 private Map makeTemperatureResult(value) {
 	
-	log.debug "TEMP $value"
 	def linkText = getLinkText(device)
 	if (tempOffset) {
-		def offset = tempOffset //as int
-		Float v = value as Float
-		value = (v + offset) as Float
+		//def offset = tempOffset.toBigDecimal()
+		//def v = value 
+		value = value + tempOffset.toBigDecimal()
 	}
-    Float nv = Math.round( (value as Float) * 10.0 ) / 10	// Need at least one decimal point
-    value = nv as Float
+    log.debug "makeTemperatureResult:${value}"
 	def descriptionText = "${linkText} was ${value}°${temperatureScale}"
 	return [
 		name: 'temperature',
 		value: value,
-		descriptionText: descriptionText,
-		translatable: true,
-		unit: temperatureScale
+		descriptionText: descriptionText
 	]
+    
 }
-
-// -MY CODE- //
 
 private Map getTemperatureResult(value) {
 	log.debug 'TEMP'
