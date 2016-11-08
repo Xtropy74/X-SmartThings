@@ -198,9 +198,9 @@ private Map parseCustomMessage(String description) {
 //		def value = description, "temperature: ", getTemperatureScale()
 //		def value = (description - "temperature: ", getTemperatureScale())
 		def value = zigbee.parseHATemperatureValue(description, "temperature: ", getTemperatureScale())
-//        resultMap = getTemperatureResult(Integer.parseInt(value, 16).shortValue() / 100)
+       resultMap = getTemperatureResult(Integer.parseInt(value, 16).shortValue() / 100)
 // ORG		resultMap = getTemperatureResult(value)
-		resultMap = getTemperatureResult(value)
+//		resultMap = getTemperatureResult(value)
 	}
 	log.debug "Refreshing shit $value and $resultmap"
     return resultMap
