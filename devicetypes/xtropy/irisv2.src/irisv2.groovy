@@ -12,6 +12,7 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  *  License for the specific language governing permissions and limitations
  *  under the License.
+ *  Latest as of November 28, 2016
  */
 import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 
@@ -106,7 +107,7 @@ def parse(String description) {
 	}
 
 	log.debug "Parse returned $map"
-	def result = map ? createEvent(map) : null
+	def result = map ? createEvent(map) : [:]
 
 	if (description?.startsWith('enroll request')) {
 		List cmds = enrollResponse()
