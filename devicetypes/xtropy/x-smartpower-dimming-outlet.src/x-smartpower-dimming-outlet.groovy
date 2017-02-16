@@ -83,7 +83,7 @@ def parse(String description) {
 }
 
 def setLevel(value) {
-	zigbee.setLevel(value)
+	zigbee.setLevel(value) + zigbee.onOffRefresh() + zigbee.levelRefresh()       //adding refresh because of ZLL bulb not conforming to send-me-a-report
 }
 
 def off() {
