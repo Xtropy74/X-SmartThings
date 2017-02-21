@@ -161,7 +161,7 @@ private forceLogin() {
 private login() { return (!(state.session.expiration > now())) ? doLogin() : true }
 
 private doLogin() { 
-	apiGet("/api/v4/user/validate", [username: settings.username, password: settings.password] ) { response ->
+	apiGet("/api/user/validate", [username: settings.username, password: settings.password] ) { response ->
 		if (response.status == 200) {
 			if (response.data.SecurityToken != null) {
 				state.session.brandID = response.data.BrandId
