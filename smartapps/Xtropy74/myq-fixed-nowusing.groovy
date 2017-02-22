@@ -16,9 +16,9 @@
  *
  */
 definition(
-	name: "MyQ (Connect)",
-	namespace: "copy-ninja",
-	author: "Jason Mok",
+	name: "MyQ (Connect)-X",
+	namespace: "xtropy",
+	author: "Xtropy/Jason Mok",
 	description: "Connect MyQ to control your devices",
 	category: "SmartThings Labs",
 	iconUrl:   "http://smartthings.copyninja.net/icons/MyQ@1x.png",
