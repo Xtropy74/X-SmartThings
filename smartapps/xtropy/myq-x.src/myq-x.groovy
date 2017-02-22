@@ -18,7 +18,7 @@
 definition(
 	name: "MyQ (Connect)-X",
 	namespace: "xtropy",
-	author: "Xtropy/Jason Mok",
+	author: "Xtropy",
 	description: "Connect MyQ to control your devices",
 	category: "SmartThings Labs",
 	iconUrl:   "http://smartthings.copyninja.net/icons/MyQ@1x.png",
